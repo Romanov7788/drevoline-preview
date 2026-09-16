@@ -1,0 +1,9 @@
+assets/generated/
+assets/video/
+.claude/
+extract_frames
+measure_seams
+measure_flicker
+brightness_curve
+stabilise_exposure
+.DS_Store

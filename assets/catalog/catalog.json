@@ -1,0 +1,36 @@
+{
+  "business": "Drevoline",
+  "site": "https://drevoline.com.ua",
+  "claim": "Повний виробничий цикл — від сировини до готового виробу",
+  "categories": [
+    {
+      "slug": "vyrobnytstvo",
+      "title": "Виробництво і склад",
+      "files": ["yard_aerial.jpg", "forklift_kiln.jpg", "truck_lumber.jpg", "loading_dock.jpg"],
+      "true_total": 4,
+      "source_url": "https://drevoline.com.ua/pro-kompaniyu"
+    },
+    {
+      "slug": "sauna",
+      "title": "Лазня та сауна (деревина з липи)",
+      "files": ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg","07.jpg","08.jpg","09.jpg","10.jpg","11.jpg","12.jpg","13.jpg","14.jpg","15.jpg","16.jpg","17.jpg","18.jpg","19.jpg"],
+      "true_total": 19,
+      "price_from": "600 грн",
+      "source_url": "https://drevoline.com.ua/laznya-ta-sauna"
+    },
+    {
+      "slug": "stolyarni",
+      "title": "Столярні вироби",
+      "files": ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg","07.jpg"],
+      "true_total": 7,
+      "source_url": "https://drevoline.com.ua/stolyarni-vyroby"
+    },
+    {
+      "slug": "mebli",
+      "title": "Меблі з дерева",
+      "files": ["01.jpg","02.jpg","03.jpg"],
+      "true_total": 3,
+      "source_url": "https://drevoline.com.ua/mebli-z-dereva"
+    }
+  ]
+}

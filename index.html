@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Drevoline — цех і склад</title>
+<style>
+  :root {
+    --bg: #0d0a08;
+    --stage: #1a140f;
+    --wood: #c98f4e;
+    --wood-light: #e8c896;
+    --ink: #f3ead9;
+    --ink-dim: #b9ac97;
+    --page-bg: #f6f1e8;
+    --page-ink: #241c14;
+    --accent: #b5651d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--page-ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ---------- HERO / SCROLL WALK ---------- */
+  .walk-scroller {
+    position: relative;
+    height: 650vh;
+    background: var(--stage);
+  }
+  .walk-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--stage);
+  }
+  .walk-sticky canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--stage);
+  }
+  .walk-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 72%, rgba(0,0,0,.55) 100%);
+  }
+  .walk-intro {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    padding: 6vh 6vw 0;
+    color: var(--ink);
+    text-align: center;
+    transition: opacity .3s ease;
+  }
+  .walk-intro h1 {
+    font-size: clamp(1.6rem, 4vw, 3rem);
+    margin: 0 0 .4em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 20px rgba(0,0,0,.6);
+  }
+  .walk-intro p {
+    margin: 0 auto;
+    max-width: 42ch;
+    color: var(--ink-dim);
+    font-size: clamp(.9rem, 1.6vw, 1.05rem);
+    text-shadow: 0 1px 12px rgba(0,0,0,.6);
+  }
+  .walk-caption {
+    position: absolute;
+    left: 6vw;
+    bottom: 8vh;
+    max-width: 480px;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .35s ease, transform .35s ease;
+    pointer-events: none;
+  }
+  .walk-caption.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .walk-caption .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: .7rem;
+    color: var(--wood-light);
+    margin-bottom: .5em;
+    display: block;
+  }
+  .walk-caption h2 {
+    margin: 0 0 .3em;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    font-weight: 600;
+  }
+  .walk-caption .price {
+    color: var(--wood-light);
+    font-size: .9rem;
+    margin: 0 0 .8em;
+  }
+  .walk-thumbs {
+    display: flex;
+    gap: 10px;
+  }
+  .walk-thumbs a {
+    display: block;
+    width: 74px;
+    height: 74px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.25);
+    flex-shrink: 0;
+  }
+  .walk-thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .walk-thumbs .more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.5);
+    color: var(--ink);
+    font-size: .8rem;
+    font-weight: 600;
+  }
+  .walk-progress {
+    position: absolute;
+    right: 6vw;
+    bottom: 8vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .walk-progress .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.25);
+    transition: background .3s ease, transform .3s ease;
+  }
+  .walk-progress .dot.active {
+    background: var(--wood-light);
+    transform: scale(1.3);
+  }
+
+  /* bridge to page */
+  .bridge {
+    height: 18vh;
+    background: linear-gradient(180deg, var(--stage) 0%, var(--page-bg) 100%);
+  }
+
+  /* ---------- CATALOG SECTION ---------- */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 6vw 8vh;
+  }
+  .claim {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 5vh;
+  }
+  .claim p {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+  .category {
+    margin-bottom: 5vh;
+  }
+  .category h3 {
+    font-size: 1.3rem;
+    margin: 0 0 .2em;
+  }
+  .category .meta {
+    color: #7a6c58;
+    font-size: .9rem;
+    margin: 0 0 1em;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .grid a {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .3s ease;
+  }
+  .grid a:hover img { transform: scale(1.06); }
+
+  footer {
+    text-align: center;
+    padding: 4vh 6vw 6vh;
+    color: #8a7c68;
+    font-size: .8rem;
+    line-height: 1.6;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #14100c; color: #ece3d3; }
+    .category .meta { color: #a89a84; }
+    footer { color: #8a7c68; }
+  }
+</style>
+</head>
+<body>
+
+<section class="walk-scroller" id="walkScroller">
+  <div class="walk-sticky">
+    <canvas id="walkCanvas"></canvas>
+    <div class="walk-vignette"></div>
+
+    <div class="walk-intro" id="walkIntro">
+      <h1>Drevoline</h1>
+      <p>Повний виробничий цикл — від сировини до готового виробу. Прогорніть, щоб пройти цехом.</p>
+    </div>
+
+    <div class="walk-caption" data-stop="0">
+      <span class="eyebrow">Виробництво і склад</span>
+      <h2>Штабелі дошки біля входу</h2>
+      <div class="walk-thumbs" id="thumbs-vyrobnytstvo"></div>
+    </div>
+
+    <div class="walk-caption" data-stop="1">
+      <span class="eyebrow">Столярні вироби</span>
+      <h2>Верстак і готові вироби</h2>
+      <div class="walk-thumbs" id="thumbs-stolyarni"></div>
+    </div>
+
+    <div class="walk-caption" data-stop="2">
+      <span class="eyebrow">Лазня та сауна</span>
+      <h2>Деревина з липи — від 600 грн</h2>
+      <div class="walk-thumbs" id="thumbs-sauna"></div>
+    </div>
+
+    <div class="walk-caption" data-stop="3">
+      <span class="eyebrow">Меблі з дерева</span>
+      <h2>Готові вироби на вітрині</h2>
+      <div class="walk-thumbs" id="thumbs-mebli"></div>
+    </div>
+
+    <div class="walk-progress" id="walkProgress">
+      <div class="dot" data-i="0"></div>
+      <div class="dot" data-i="1"></div>
+      <div class="dot" data-i="2"></div>
+      <div class="dot" data-i="3"></div>
+    </div>
+  </div>
+</section>
+
+<div class="bridge"></div>
+
+<main>
+  <div class="claim">
+    <p>«Повний виробничий цикл — від сировини до готового виробу»</p>
+  </div>
+
+  <div class="category" id="cat-vyrobnytstvo">
+    <h3>Виробництво і склад</h3>
+    <p class="meta">Всі 4 фото →</p>
+    <div class="grid"></div>
+  </div>
+
+  <div class="category" id="cat-sauna">
+    <h3>Лазня та сауна (деревина з липи)</h3>
+    <p class="meta">Всі 19 фото → ціни від 600 грн</p>
+    <div class="grid"></div>
+  </div>
+
+  <div class="category" id="cat-stolyarni">
+    <h3>Столярні вироби</h3>
+    <p class="meta">Всі 7 фото →</p>
+    <div class="grid"></div>
+  </div>
+
+  <div class="category" id="cat-mebli">
+    <h3>Меблі з дерева</h3>
+    <p class="meta">Всі 3 фото →</p>
+    <div class="grid"></div>
+  </div>
+</main>
+
+<footer>
+  Інтер'єр цеху на цій сторінці — стилізована 3D-візуалізація, а не фотографія
+  приміщення компанії. Усі фотографії виробів і матеріалів вище — реальні,
+  з сайту drevoline.com.ua.
+</footer>
+
+<script type="module">
+  import ScrollFrames from './scroll_frames.js';
+
+  const CATALOG = {
+    vyrobnytstvo: { title: 'Виробництво і склад', files: ['yard_aerial.jpg','forklift_kiln.jpg','truck_lumber.jpg','loading_dock.jpg'], total: 4, dir: 'assets/catalog/vyrobnytstvo' },
+    stolyarni:    { title: 'Столярні вироби', files: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg'], total: 7, dir: 'assets/catalog/stolyarni' },
+    sauna:        { title: 'Лазня та сауна', files: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg','09.jpg','10.jpg','11.jpg','12.jpg','13.jpg','14.jpg','15.jpg','16.jpg','17.jpg','18.jpg','19.jpg'], total: 19, dir: 'assets/catalog/sauna' },
+    mebli:        { title: 'Меблі з дерева', files: ['01.jpg','02.jpg','03.jpg'], total: 3, dir: 'assets/catalog/mebli' },
+  };
+
+  const CATALOG_URLS = {
+    vyrobnytstvo: 'https://drevoline.com.ua/pro-kompaniyu',
+    stolyarni: 'https://drevoline.com.ua/stolyarni-vyroby',
+    sauna: 'https://drevoline.com.ua/laznya-ta-sauna',
+    mebli: 'https://drevoline.com.ua/mebli-z-dereva',
+  };
+
+  // hero thumbs (3 per stop)
+  function fillThumbs(el, key) {
+    const cat = CATALOG[key];
+    const shown = cat.files.slice(0, 3);
+    el.innerHTML = shown.map(f => `<a href="${CATALOG_URLS[key]}" target="_blank" rel="noopener"><img src="${cat.dir}/${f}" loading="lazy" alt=""></a>`).join('')
+      + (cat.total > 3 ? `<a href="${CATALOG_URLS[key]}" target="_blank" rel="noopener" class="more">всі ${cat.total}<br>→</a>` : '');
+  }
+  fillThumbs(document.getElementById('thumbs-vyrobnytstvo'), 'vyrobnytstvo');
+  fillThumbs(document.getElementById('thumbs-stolyarni'), 'stolyarni');
+  fillThumbs(document.getElementById('thumbs-sauna'), 'sauna');
+  fillThumbs(document.getElementById('thumbs-mebli'), 'mebli');
+
+  // catalog grids below the fold
+  function fillGrid(key) {
+    const cat = CATALOG[key];
+    const grid = document.querySelector(`#cat-${key} .grid`);
+    grid.innerHTML = cat.files.map(f => `<a href="${CATALOG_URLS[key]}" target="_blank" rel="noopener"><img src="${cat.dir}/${f}" loading="lazy" alt=""></a>`).join('');
+  }
+  Object.keys(CATALOG).forEach(fillGrid);
+
+  // ---- scroll-driven walk ----
+  const canvas = document.getElementById('walkCanvas');
+  const scroller = document.getElementById('walkScroller');
+  const intro = document.getElementById('walkIntro');
+  const captions = [...document.querySelectorAll('.walk-caption')];
+  const dots = [...document.querySelectorAll('.walk-progress .dot')];
+
+  // frame fractions for the 4 real stops (out of 479 total indices)
+  const F1 = 120 / 479, F2 = 240 / 479, F3 = 360 / 479, F4 = 1.0;
+  const H = 0.015; // hold width in frame-fraction
+
+  const seq = new ScrollFrames({
+    canvas,
+    scroller,
+    dir: './frames',
+    manifest: './frames/manifest.json',
+    fit: 'cover',
+    timeline: [
+      { to: F1 - H, scroll: 3 },
+      { to: F1,     scroll: 1 },
+      { to: F2 - H, scroll: 3 },
+      { to: F2,     scroll: 1 },
+      { to: F3 - H, scroll: 3 },
+      { to: F3,     scroll: 1 },
+      { to: F4,     scroll: 3 },
+    ],
+    onFrame(p) {
+      // fade out intro quickly
+      intro.style.opacity = p < 0.03 ? String(1 - p / 0.03) : '0';
+
+      // which stop are we at/past (0..3)
+      const stopFracs = [F1, F2, F3, F4];
+      let active = -1;
+      for (let i = 0; i < stopFracs.length; i++) {
+        const lo = stopFracs[i] - H - 0.01;
+        const hi = stopFracs[i] + 0.005;
+        if (p >= lo && p <= hi) { active = i; break; }
+      }
+      captions.forEach((c, i) => c.classList.toggle('active', i === active));
+      dots.forEach((d, i) => d.classList.toggle('active', i === active || (active === -1 && p > stopFracs[i] - 0.01)));
+    },
+  });
+
+  seq.start();
+</script>
+
+</body>
+</html>
