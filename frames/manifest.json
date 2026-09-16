@@ -1,0 +1,5 @@
+{
+  "frames": 480,
+  "pattern": "frame_%04d.jpg",
+  "stops": [0, 120, 240, 360, 479]
+}
