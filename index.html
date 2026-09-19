@@ -215,6 +215,157 @@
     margin: 0 auto;
   }
 
+  /* ---------- CONTACT / CTA ---------- */
+  .walk-cta {
+    position: absolute;
+    right: 6vw;
+    top: 6vh;
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    padding: .7em 1.2em;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff9ef;
+    font-size: .85rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    transition: transform .2s ease, background .2s ease;
+  }
+  .walk-cta:hover { background: #9a5518; transform: translateY(-1px); }
+
+  #contact {
+    background: var(--stage);
+    color: var(--ink);
+    padding: 7vh 6vw;
+  }
+  .contact-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6vw;
+  }
+  @media (max-width: 800px) {
+    .contact-wrap { grid-template-columns: 1fr; gap: 5vh; }
+  }
+  .contact-info h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 0 0 .3em;
+  }
+  .contact-info > p {
+    color: var(--ink-dim);
+    margin: 0 0 2em;
+    max-width: 40ch;
+  }
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1em;
+  }
+  .contact-list li {
+    display: flex;
+    gap: .8em;
+    align-items: flex-start;
+  }
+  .contact-list .ico {
+    width: 20px;
+    flex-shrink: 0;
+    color: var(--wood-light);
+  }
+  .contact-list a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,.25);
+  }
+  .contact-list a:hover { border-color: var(--wood-light); }
+  .contact-list span.dim { color: var(--ink-dim); font-size: .9rem; }
+
+  .contact-form {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
+    padding: 2em;
+  }
+  .contact-form h3 {
+    margin: 0 0 .2em;
+    font-size: 1.15rem;
+  }
+  .contact-form .sub {
+    color: var(--ink-dim);
+    font-size: .85rem;
+    margin: 0 0 1.4em;
+  }
+  .contact-form label {
+    display: block;
+    font-size: .8rem;
+    color: var(--ink-dim);
+    margin-bottom: .4em;
+  }
+  .contact-form .field {
+    margin-bottom: 1.1em;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px;
+    padding: .75em .9em;
+    color: var(--ink);
+    font-size: .95rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--wood-light);
+  }
+  .contact-form button {
+    width: 100%;
+    padding: .9em 1.2em;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff9ef;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease;
+  }
+  .contact-form button:hover { background: #9a5518; }
+  .contact-form .note {
+    margin-top: 1em;
+    font-size: .75rem;
+    color: var(--ink-dim);
+  }
+  .contact-success {
+    display: none;
+    text-align: center;
+    padding: 2em 0;
+  }
+  .contact-success .check {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff9ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1em;
+    font-size: 1.4rem;
+  }
+  .contact-success h3 { margin: 0 0 .3em; }
+  .contact-success p { color: var(--ink-dim); margin: 0; font-size: .9rem; }
+  .contact-form.sent form { display: none; }
+  .contact-form.sent .contact-success { display: block; }
+
   @media (prefers-color-scheme: dark) {
     body { background: #14100c; color: #ece3d3; }
     .category .meta { color: #a89a84; }
@@ -264,6 +415,8 @@
       <div class="dot" data-i="2"></div>
       <div class="dot" data-i="3"></div>
     </div>
+
+    <a href="#contact" class="walk-cta">Залишити заявку →</a>
   </div>
 </section>
 
@@ -299,10 +452,68 @@
   </div>
 </main>
 
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h2>Зв'яжіться з нами</h2>
+      <p>Порахуємо вартість під ваш об'єм і підкажемо, яка деревина підійде для задачі.</p>
+      <ul class="contact-list">
+        <li>
+          <span class="ico">☎</span>
+          <span>
+            <a href="tel:+380992542020">+38 099 254 20 20</a> <span class="dim">— Катерина</span><br>
+            <a href="tel:+380662946883">+38 066 294 68 83</a> <span class="dim">— Максим</span><br>
+            <a href="tel:+380506199352">+38 050 619 93 52</a> <span class="dim">— Сергій</span>
+          </span>
+        </li>
+        <li>
+          <span class="ico">✉</span>
+          <a href="mailto:info@drevoline.com.ua">info@drevoline.com.ua</a>
+        </li>
+        <li>
+          <span class="ico">⌂</span>
+          <span>м. Харків, вул. Молокіна, 1</span>
+        </li>
+        <li>
+          <span class="ico">◷</span>
+          <span class="dim">Пн–Пт 8:00–17:00, Сб–Нд вихідний</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="contact-form" id="contactForm">
+      <form id="leadForm">
+        <h3>Залишити заявку</h3>
+        <p class="sub">Передзвонимо протягом робочого дня.</p>
+        <div class="field">
+          <label for="f-name">Ім'я</label>
+          <input id="f-name" name="name" type="text" required placeholder="Як до вас звертатись">
+        </div>
+        <div class="field">
+          <label for="f-phone">Телефон</label>
+          <input id="f-phone" name="phone" type="tel" required placeholder="+38 0__ ___ __ __">
+        </div>
+        <div class="field">
+          <label for="f-message">Що потрібно</label>
+          <textarea id="f-message" name="message" rows="3" placeholder="Наприклад: меблевий щит з ясена, 2 м³"></textarea>
+        </div>
+        <button type="submit">Залишити заявку</button>
+        <p class="note">Демо-форма прев'ю-сторінки: заявки нікуди не надсилаються.</p>
+      </form>
+      <div class="contact-success">
+        <div class="check">✓</div>
+        <h3>Заявку прийнято</h3>
+        <p>Це демонстрація — на робочому сайті сюди прийде реальний дзвінок менеджеру.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   Інтер'єр цеху на цій сторінці — стилізована 3D-візуалізація, а не фотографія
   приміщення компанії. Усі фотографії виробів і матеріалів вище — реальні,
-  з сайту drevoline.com.ua.
+  з сайту drevoline.com.ua. Форма заявки вище — заглушка для прев'ю шаблону:
+  контакти реальні, надсилання заявки — ні.
 </footer>
 
 <script type="module">
@@ -386,6 +597,14 @@
   });
 
   seq.start();
+
+  // ---- contact form (preview stub — no backend, shows a demo confirmation) ----
+  const leadForm = document.getElementById('leadForm');
+  const contactFormEl = document.getElementById('contactForm');
+  leadForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    contactFormEl.classList.add('sent');
+  });
 </script>
 
 </body>
